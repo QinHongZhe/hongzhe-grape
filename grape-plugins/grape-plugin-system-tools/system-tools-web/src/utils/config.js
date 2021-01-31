@@ -23,7 +23,7 @@ const Config = {
     if (suffix && !suffix.startsWith('/')) {
       suffix = '/' + suffix
     }
-    return `${window.config.serverUrl}/${configId}${suffix}`
+    return `${window.config.serverUrl}${window.config.pluginApiPrefix}${configId}${suffix}`
   }
 }
 export default Config
