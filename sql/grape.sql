@@ -165,8 +165,8 @@ CREATE TABLE `role`  (
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES ('1', 'admin', 'super_admin', 1, 0, '', '2021-01-01 08:08:08', 'admin', '2021-01-08 15:01:08', '超级管理员');
-
+INSERT INTO `role` VALUES ('1', 'admin', 'super_admin', 1, 0, 'admin', '2021-01-01 08:08:08', 'admin', '2021-01-08 15:01:08', '超级管理员');
+INSERT INTO `role` VALUES ('2', '普通角色', 'common', 1, 0, 'admin', '2021-01-08 15:01:08', 'admin', '2021-01-08 15:01:08', '普通角色');
 -- ----------------------------
 -- Table structure for role_menu
 -- ----------------------------
