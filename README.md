@@ -48,13 +48,20 @@ sql: sql文件
 3. 执行`startup.cmd` 或者 `startup.cmd`
 
 ##### 演示图
-![image](doc/login.png)登录页面
-![image](doc/main.png)主页面
-![image](doc/menu.png)菜单管理页面
-![image](doc/user.png)用户管理页面
-![image](doc/client.png)授权客户端管理页面
-![image](doc/plugin.png)插件管理页面
-![image](doc/code-gen.png)插件中开发的页面
+- 登录页面
+![image](doc/login.png)
+- 主页面
+![image](doc/main.png)
+- 菜单管理页面
+![image](doc/menu.png)
+- 用户管理页面
+![image](doc/user.png)
+- 授权客户端管理页面
+![image](doc/client.png)
+- 插件管理页面
+![image](doc/plugin.png)
+- 插件中开发的页面
+![image](doc/code-gen.png)
 
 ##### 演示地址
 [演示地址](http://39.99.159.68:9000/web)
