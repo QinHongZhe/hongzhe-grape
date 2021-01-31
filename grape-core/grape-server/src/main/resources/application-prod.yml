@@ -22,8 +22,8 @@ spring:
 # mybatis-plus 配置
 mybatis-plus:
   # 别名定义包
-  typeAliasesPackage: com.gitee.starblues.blocks.repository.databases.entity
-  mapperLocations: classpath:/com/gitee/starblues/blocks/repository/databases/mapper/xml/*Mapper.xml
+  typeAliasesPackage: com.gitee.starblues.grape.repository.databases.entity
+  mapperLocations: classpath:/com/gitee/starblues/grape/repository/databases/mapper/xml/*Mapper.xml
   configuration:
     mapUnderscoreToCamelCase: true
 

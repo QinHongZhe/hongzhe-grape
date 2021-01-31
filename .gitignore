@@ -51,5 +51,5 @@ yarn-error.log*
 
 
 ### 编译后的resources中的web ###
-blocks-core/blocks-server/src/main/resources/web/**
-blocks-plugins/blocks-plugin-system-tools/src/main/resources/web/**
+grape-core/grape-server/src/main/resources/web
+grape-plugins/*/src/main/resources/web
