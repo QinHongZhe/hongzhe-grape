@@ -2,22 +2,55 @@
 
 #### 介绍
 前后端可插件开发的后台管理系统
+- 可在后端进行插件化开发
+- 可在前端进行插件化开发, 并且支持动态插入导航菜单
+
+#### 目录
+```text
+bin: 生成环境启动停止脚本
+grape-core: 系统合并模块
+    grape-runner: 生产环境运行模块
+    grape-server: 主程序模块
+    grape-web: 主前端
+grape-plugins: 插件模块
+    grape-plugin-system-tools: 系统工具插件
+sql: sql文件 
+```
 
 #### 软件架构
-软件架构说明
-
+##### 后端
+- 基础: SpringBoot 2.4.2
+- 安全: SpringSecurity+JWT+Oauth2
+- 接口文档: Swagger2
+- 持久层: Mybatis+Mybatis-Plus
+- 插件框架: Springboot-Plugin-Framework 2.4.0
+##### 前端
+- 基础: Vue+Antdv+AntdvPro
+- 微前端: Qiankun
+##### 数据库
+- Mysql
 
 #### 安装教程
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+#### 初始化数据库
+将 `sql` 文件夹 `grape.sql` 初始化到`mysql`中
 
-#### 使用说明
+##### 开发环境启动
+1. mvn clean install -Dmaven.test.skip=true
+2. `grape-server`中配置数据库连接
+3. 配置如下
+![image](doc/dev-config.png)
+4. 启动
 
-1.  xxxx
-2.  xxxx
-3.  xxxx
+##### 打包生产环境
+1. windows下执行: `package.bat`
+2. 进入 `dist` 
+3. 执行`startup.cmd` 或者 `startup.cmd`
+
+##### 演示地址
+[演示地址](http://39.99.159.68:9000/web)
+- 用户名密码: admin/123456
+
 
 #### 参与贡献
 
@@ -25,13 +58,3 @@
 2.  新建 Feat_xxx 分支
 3.  提交代码
 4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
