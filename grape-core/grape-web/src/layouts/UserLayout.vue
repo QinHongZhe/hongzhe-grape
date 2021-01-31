@@ -10,7 +10,7 @@
           <div class="header">
             <a href="/">
               <img src="~@/assets/logo.jpeg" class="logo" alt="logo">
-              <span class="title">Blocks</span>
+              <span class="title">Grape</span>
             </a>
           </div>
           <div class="desc">
