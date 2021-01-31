@@ -1,0 +1,5 @@
+webResourceLocations:
+  - classpath:web
+# codeGeneratorWebPath: http://127.0.0.1:8081/plugin-web/blocks-plugin-system-tools/
+codeGeneratorWebPath: /index.html
+codeGeneratorDir: codeGeneratorTemp

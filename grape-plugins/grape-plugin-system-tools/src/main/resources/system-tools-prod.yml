@@ -1,0 +1,4 @@
+webResourceLocations:
+  - classpath:web/
+codeGeneratorWebPath: /index.html
+codeGeneratorDir: codeGeneratorTemp
