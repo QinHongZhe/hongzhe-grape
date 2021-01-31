@@ -47,6 +47,15 @@ sql: sql文件
 2. 进入 `dist` 
 3. 执行`startup.cmd` 或者 `startup.cmd`
 
+##### 演示图
+![image](doc/login.png)
+![image](doc/main.png)
+![image](doc/menu.png)
+![image](doc/user.png)
+![image](doc/client.png)
+![image](doc/plugin.png)
+![image](doc/code-gen.png)
+
 ##### 演示地址
 [演示地址](http://39.99.159.68:9000/web)
 - 用户名密码: admin/123456
