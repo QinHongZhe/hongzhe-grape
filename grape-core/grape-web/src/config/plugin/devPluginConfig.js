@@ -1,10 +1,12 @@
 // 开发环境下配置插件菜单和app信息
 
+const systemToolsRootRoute = '/grape-plugin-system-tools'
+
 const pluginWebAppInfos = [
   {
-    appName: 'blocks-plugin-system-tools',
-    appPath: 'http://127.0.0.1:8082/plugin-web/blocks-plugin-system-tools/',
-    rootRouting: '/blocks-plugin-system-tools'
+    appName: 'system-tools-web',
+    appPath: 'http://127.0.0.1:8082/plugin-web/grape-plugin-system-tools/',
+    rootRouting: systemToolsRootRoute
   }
 ]
 
@@ -14,7 +16,7 @@ const navigationInfos = [
     parentId: '0',
     key: 'plugin-dev-menus',
     path: '',
-    redirect: '/blocks-plugin-system-tools/code-generator',
+    redirect: `${systemToolsRootRoute}/code-generator`,
     component: 'RouteView',
     meta: {
       title: '插件菜单(dev)',
@@ -26,7 +28,7 @@ const navigationInfos = [
     id: '1001',
     parentId: '1000',
     key: 'code-generator',
-    path: '/blocks-plugin-system-tools/code-generator',
+    path: `${systemToolsRootRoute}/code-generator`,
     redirect: null,
     component: 'PluginExtensionWeb',
     meta: {

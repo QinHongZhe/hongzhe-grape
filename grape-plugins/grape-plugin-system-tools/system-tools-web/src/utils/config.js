@@ -4,9 +4,6 @@ const Config = {
   getConfig () {
     return window.config
   },
-  getEnv () {
-    return window.config.env
-  },
   getServerUrl () {
     return window.config.serverUrl
   },

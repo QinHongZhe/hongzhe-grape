@@ -1,7 +1,7 @@
 REM windows package
 
 REM package
-REM call mvn clean install -Dmaven.test.skip=true
+REM mvn clean install -Dmaven.test.skip=true
 
 REM del dist
 rmdir dist /s /q
