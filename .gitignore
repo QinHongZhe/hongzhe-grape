@@ -53,3 +53,4 @@ yarn-error.log*
 ### 编译后的resources中的web ###
 grape-core/grape-server/src/main/resources/web
 grape-plugins/*/src/main/resources/web
+application-zhuo.yml

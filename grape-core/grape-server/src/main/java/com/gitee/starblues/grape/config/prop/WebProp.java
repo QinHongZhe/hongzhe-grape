@@ -20,7 +20,7 @@ public class WebProp {
     /**
      * web 界面路径
      */
-    @Value("${webLocation:classpath:/web/}")
+    @Value("${webLocation:classpath:/grape-web/}")
     private String webLocation;
 
     /**

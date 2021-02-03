@@ -41,6 +41,8 @@
         <web.path>../grape-web</web.path>
         <!-- 前端编译目录 -->
         <web.build.path>../grape-web/dist</web.build.path>
+        <!-- web存放在resources下的目录 -->
+        <web.resources.path>grape-web</web.resources.path>
     </properties>
 
     <dependencyManagement>

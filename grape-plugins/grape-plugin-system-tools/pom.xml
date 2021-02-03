@@ -13,8 +13,6 @@
     <description>系统工具插件</description>
 
     <properties>
-        <webInterface.build.path>web/dist</webInterface.build.path>
-
         <mybatis-plus.version>3.4.1</mybatis-plus.version>
         <velocity.version>2.2</velocity.version>
 
@@ -26,6 +24,8 @@
         <web.path>${basedir}/system-tools-web</web.path>
         <!-- 前端编译目录 -->
         <web.build.path>${basedir}/system-tools-web/dist</web.build.path>
+        <!-- resources 存放前端的目录 -->
+        <web.resources.path>system-tools-web</web.resources.path>
     </properties>
 
     <dependencies>

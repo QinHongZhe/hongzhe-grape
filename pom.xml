@@ -30,7 +30,7 @@
         <!-- 前端编译目录 -->
         <web.build.path/>
         <!-- web存放在resources下的目录 -->
-        <web.resources.path>web</web.resources.path>
+        <web.resources.path/>
     </properties>
 
     <profiles>

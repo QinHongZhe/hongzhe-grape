@@ -21,13 +21,11 @@
     -->
     <template v-slot:menuHeaderRender>
       <div>
-        <logo-svg />
+        <img src="~@/assets/logo.png" alt="logo">
         <h1>{{ title }}</h1>
       </div>
     </template>
-    <!-- 1.0.0+ 版本 pro-layout 提供 API,
-          增加 Header 左侧内容区自定义
-    -->
+    <!-- 1.0.0+ 版本 pro-layout 提供 API,增加 Header 左侧内容区自定义-->
     <template v-slot:headerContentRender>
       <div>
         <a-tooltip title="刷新页面">
@@ -62,7 +60,6 @@ import defaultSettings from '@/config/defaultSettings'
 import RightContent from '@/components/GlobalHeader/RightContent'
 import GlobalFooter from '@/components/GlobalFooter'
 import Ads from '@/components/Other/CarbonAds'
-import LogoSvg from '../assets/logo.svg?inline'
 
 export default {
   name: 'BasicLayout',
@@ -70,7 +67,6 @@ export default {
     SettingDrawer,
     RightContent,
     GlobalFooter,
-    LogoSvg,
     Ads
   },
   data () {

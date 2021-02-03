@@ -71,7 +71,7 @@ plugin:
 
 # web界面配置
 web:
-  webLocation: classpath:/web/
+  webLocation: classpath:/grape-web/
   # web 界面的配置
   config:
     # 服务的接口url地址, 默认为空, 表示使用浏览器访问的地址

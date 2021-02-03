@@ -1,12 +1,11 @@
 <template>
   <global-footer class="footer custom-render">
     <template v-slot:links>
-      <a href="https://www.github.com/vueComponent/pro-layout" target="_blank">Pro Layout</a>
-      <a href="https://www.github.com/vueComponent/ant-design-vue-pro" target="_blank">Github</a>
-      <a href="https://www.github.com/sendya/" target="_blank">@Sendya</a>
+      <a href="http://39.99.159.68/grape/" target="_blank">文档</a>
+      <a href="https://gitee.com/starblues/grape" target="_blank">Gitee</a>
     </template>
     <template v-slot:copyright>
-      <a href="https://github.com/vueComponent" target="_blank">vueComponent</a>
+      <a href="javascript:void(0);">Copyright © 2019-2021 StarBlues</a>
     </template>
   </global-footer>
 </template>

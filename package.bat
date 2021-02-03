@@ -1,7 +1,8 @@
 REM windows package
 
 REM package
-REM mvn clean install -Dmaven.test.skip=true
+::如果不需要进行maven打包, 则使用 REM 注释掉该行
+call mvn clean install -Dmaven.test.skip=true
 
 REM del dist
 rmdir dist /s /q
@@ -20,7 +21,7 @@ REM copy plugin and config
 xcopy grape-plugins\grape-plugin-system-tools\target\*-jar-with-dependencies.jar dist\plugins /s
 xcopy grape-plugins\grape-plugin-system-tools\src\main\resources\*-prod.yml dist\pluginConfig /s
 
-# copy bin
+REM copy bin
 xcopy bin\* dist\ /s
 
 cd dist
