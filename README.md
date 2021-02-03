@@ -24,6 +24,29 @@
 [演示地址](http://39.99.159.68:9000/web)
 - 用户名密码: admin/123456
 
+#### 快速体验
+1. 下载运行包
+- <a href="https://gitee.com/starblues/grape/attach_files/608322/download" target="_blank">点击下载</a>
+
+2. 初始化数据库
+- 新建数据库: `grape`
+- 导入sql文件: `sql/grape.sql`
+
+3. 修改数据库连接
+- 打开 `application.yml` 文件
+- 修改数据库连接, 配置数据库连接信息, 如下:
+```yaml
+ datasource:
+    url: jdbc:mysql://localhost:3306/grape?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+```
+4. 启动项目执行
+
+执行`startup.cmd`或者`startup.sh` 启动项目
+
+5. 访问界面: `http://127.0.0.1/web`
+默认用户名密码: `admin/123456`
 
 #### 目录说明
 ```text
@@ -83,30 +106,6 @@ sql: sql文件
 
 ##### 插件功能开发文档
 [https://gitee.com/starblues/springboot-plugin-framework-parent](https://gitee.com/starblues/springboot-plugin-framework-parent)
-
-#### 快速体验
-1. 下载运行包
-- <a href="https://gitee.com/starblues/grape/attach_files/608322/download" target="_blank">点击下载</a>
-
-2. 初始化数据库
-- 新建数据库: `grape`
-- 导入sql文件: `sql/grape.sql`
-
-3. 修改数据库连接
-- 打开 `application.yml` 文件
-- 修改数据库连接, 配置数据库连接信息, 如下:
-```yaml
- datasource:
-    url: jdbc:mysql://localhost:3306/grape?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
-    username: root
-    password: root
-```
-4. 启动项目执行
-
-执行`startup.cmd`或者`startup.sh` 启动项目
-
-5. 访问界面: `http://127.0.0.1/web`
-默认用户名密码: `admin/123456`
 
 ##### 演示图
 - 登录页面
