@@ -1,5 +1,6 @@
 server:
-  port: 9001
+  port: 9000
+# 是否是demo环境, 如果为demo环境, 则不允许进行操作
 # demo: true
 spring:
   servlet:
@@ -30,8 +31,10 @@ mybatis-plus:
 
 # swagger 接口配置, 详细见: https://doc.xiaominfo.com/knife4j/documentation/enhance.html
 knife4j:
+  # 是否启用
   enable: true
   setting:
+    # 是否启用debug
     enableDebug: true
 
 # 系统核心配置
@@ -56,7 +59,7 @@ plugin:
   # 生产环境下, 插件文件的路径. 只在生产环境下生效
   pluginConfigFilePath:
   # 插件rest接口前缀
-  pluginRestPathPrefix: /plugins/
+  pluginRestPathPrefix: /api/plugins/
   # 在卸载插件后, 备份插件的目录
   backupPluginPath: backupPlugin
   # 上传的插件所存储的临时目录
@@ -72,8 +75,13 @@ web:
   webLocation: classpath:/web/
   # web 界面的配置
   config:
+    # 服务的接口url地址, 默认为空, 表示使用浏览器访问的地址
     serverUrl:
+    # 前端插件请求插件接口的api前缀
     pluginApiPrefix: ${plugin.pluginRestPathPrefix}
+    # 密码传输是否使用加密
     passwordEncryption: true
+    # OAuth2 客户端id
     clientId: admin_client
+    # OAuth2 秘钥
     clientSecret: f640e16a951b4109a88cf0fcd4d66a63
