@@ -25,8 +25,9 @@
 - 用户名密码: admin/123456
 
 #### 快速体验
-1. 下载运行包
-- <a href="https://gitee.com/starblues/grape/attach_files/608322/download" target="_blank">点击下载</a>
+1. 下载运行包`grape.zip`
+
+- <a href="https://gitee.com/starblues/grape/attach_files" target="_blank">进入下载页</a>
 
 2. 初始化数据库
 - 新建数据库: `grape`
