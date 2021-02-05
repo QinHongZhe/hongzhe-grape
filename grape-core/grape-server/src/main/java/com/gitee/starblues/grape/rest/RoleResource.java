@@ -6,17 +6,21 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.gitee.starblues.grape.config.prop.SystemProp;
+import com.gitee.starblues.grape.core.security.MenuService;
 import com.gitee.starblues.grape.core.security.RoleMenuService;
 import com.gitee.starblues.grape.core.security.RoleService;
+import com.gitee.starblues.grape.core.security.model.MenuTree;
 import com.gitee.starblues.grape.repository.databases.entity.Role;
 import com.gitee.starblues.grape.repository.databases.entity.RoleMenu;
 import com.gitee.starblues.grape.rest.common.BaseResource;
 import com.gitee.starblues.grape.rest.common.Result;
 import com.gitee.starblues.grape.rest.common.enums.ApiEnum;
+import com.gitee.starblues.grape.rest.common.vo.RoleMenuVo;
 import com.gitee.starblues.grape.rest.model.param.role.RoleAddParam;
 import com.gitee.starblues.grape.rest.model.param.role.RoleMenuUpdateParam;
 import com.gitee.starblues.grape.rest.model.param.role.RolePageParam;
 import com.gitee.starblues.grape.rest.model.param.role.RoleUpdateParam;
+import com.google.common.collect.Sets;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -29,6 +33,8 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 import static com.gitee.starblues.grape.rest.common.Result.*;
 import static com.gitee.starblues.grape.rest.common.ResultUtils.errorLog;
 
@@ -48,6 +54,7 @@ public class RoleResource extends BaseResource {
     private final RoleService roleService;
     private final SystemProp systemProp;
     private final RoleMenuService roleMenuService;
+    private final MenuService menuService;
 
     @GetMapping()
     @PreAuthorize("@auth.permission('role:query')")
@@ -72,17 +79,43 @@ public class RoleResource extends BaseResource {
         return success(ApiEnum.GET_SUCCESS, page);
     }
 
-    @GetMapping("/list/enable")
-    @PreAuthorize("@auth.permission('role:query')")
-    @ApiOperation("查询所有启用的角色角色")
-    public Result<List<Role>> getRoleList() {
-        LambdaQueryWrapper<Role> wrapper = Wrappers.<Role>lambdaQuery()
-                .eq(Role::getDeleted, 0)
-                .eq(Role::getStatus, 1)
-                .orderByDesc(Role::getGmtCreated);
-        return success(ApiEnum.GET_SUCCESS, roleService.list(wrapper));
+    @GetMapping("/role-menu")
+    @PreAuthorize("@auth.permission('role:setMenu')")
+    @ApiOperation("分配角色时, 查询当前角色的菜单和权限")
+    public Result<RoleMenuVo> getRoleMenu(@RequestParam("roleId") String roleId) {
+        try {
+            RoleMenuVo roleMenuVo = new RoleMenuVo();
+            List<MenuTree> menuTreeByCurrentUser = menuService.getMenuTreeByCurrentUser(true);
+
+            LambdaQueryWrapper<RoleMenu> wrapper = Wrappers.<RoleMenu>lambdaQuery()
+                    .eq(RoleMenu::getRoleId, roleId)
+                    .eq(RoleMenu::getIsParent, 0);
+            List<RoleMenu> roleMenus = roleMenuService.list(wrapper);
+            Set<String> menuIds = Sets.newHashSet();
+            for (RoleMenu roleMenu : roleMenus) {
+                menuIds.add(roleMenu.getMenuId());
+            }
+            roleMenuVo.setMenuIds(menuIds);
+            roleMenuVo.setMenuTree(menuTreeByCurrentUser);
+            return success(ApiEnum.GET_SUCCESS, roleMenuVo);
+        } catch (Exception e) {
+            errorLog(log, e, "获取角色 '{}' 权限菜单信息失败", roleId);
+            return failure(ApiEnum.GET_SUCCESS, e);
+        }
     }
 
+    @PutMapping("/role-menu")
+    @PreAuthorize("@auth.permission('role:setMenu')")
+    @ApiOperation("分配角色菜单和权限")
+    public Result<String> updateRoleMenu(@RequestBody @Valid RoleMenuUpdateParam param){
+        try {
+            roleService.updateRoleMenu(param);
+            return response(ApiEnum.UPDATE_SUCCESS, "修改角色权限成功");
+        } catch (Exception e) {
+            errorLog(log, e, "更新角色权限 '{}' 失败 {}", param.getRoleId(), e.getMessage());
+            return failure(ApiEnum.UPDATE_ERROR, "修改角色权限失败.", e);
+        }
+    }
 
     @PostMapping
     @PreAuthorize("@auth.permission('role:add')")
@@ -111,7 +144,7 @@ public class RoleResource extends BaseResource {
     }
 
     @PutMapping("{roleId}/{status}")
-    @PreAuthorize("@auth.permission('role:updateStatus')")
+    @PreAuthorize("@auth.permission('role:update')")
     @ApiOperation("修改角色状态")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "roleId", value = "角色id", paramType = "path", required = true),
@@ -144,29 +177,4 @@ public class RoleResource extends BaseResource {
         }
     }
 
-    @GetMapping("/list/roleMenu")
-    @ApiOperation("查询角色权限")
-    public Result<List<String>> getRoleMenuList(@RequestParam("roleId") String roleId) {
-        LambdaQueryWrapper<RoleMenu> wrapper = Wrappers.<RoleMenu>lambdaQuery()
-                .eq(RoleMenu::getRoleId, roleId)
-                .eq(RoleMenu::getIsParent, 0);
-        List<RoleMenu> roleMenus = roleMenuService.list(wrapper);
-        List<String> menuIds = new ArrayList<>();
-        for (RoleMenu roleMenu : roleMenus) {
-            menuIds.add(roleMenu.getMenuId());
-        }
-        return success(ApiEnum.GET_SUCCESS, menuIds);
-    }
-
-    @PutMapping("/roleMenu")
-    @ApiOperation("修改角色权限")
-    public Result<String> updateRoleMenu(@RequestBody @Valid RoleMenuUpdateParam param){
-        try {
-            roleService.updateRoleMenu(param);
-            return response(ApiEnum.UPDATE_SUCCESS, "修改角色权限成功");
-        } catch (Exception e) {
-            errorLog(log, e, "更新角色权限 '{}' 失败 {}", param.getRoleId(), e.getMessage());
-            return failure(ApiEnum.UPDATE_ERROR, "修改角色权限失败.", e);
-        }
-    }
 }

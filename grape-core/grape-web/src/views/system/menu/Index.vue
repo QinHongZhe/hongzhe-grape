@@ -45,7 +45,7 @@
         </a-table>
       </div>
       <edit
-        v-if="$auth('menu:update')"
+        v-if="$auth('menu:add') || $auth('menu:update')"
         ref="model"
         :visible="model.visible"
         :loading="model.confirmLoading"
@@ -62,7 +62,7 @@
 
 <script>
   import { STable } from '@/components'
-  import { getNavTree, updateStatus, deleteById, add, update } from '@/api/menu'
+  import { getNavTree, updateStatus, deleteById } from '@/api/menu'
   import Edit from '@/views/system/menu/component/Edit'
   import { fetchResult } from '@/utils/fetchUtil'
   const rowSelection = {
@@ -147,9 +147,6 @@
     },
     methods: {
       fetchList () {
-        if (!this.$auth('menu:query')) {
-          return
-        }
         getNavTree(true)
           .then(res => {
             if (fetchResult(res, false, true)) {
@@ -221,38 +218,15 @@
           this.model.opType = 'update'
         } else {
           // 新增
-          this.model.form = {}
           this.model.opType = 'add'
         }
         this.model.visible = true
       },
-      modelHandleOk (opType, fromData) {
-        if (fromData.parentId === undefined) {
-          fromData.parentId = '0'
+      modelHandleOk (result) {
+        if (result) {
+          this.fetchList()
         }
-        if (opType === 'add') {
-          // 新增
-          this.model.confirmLoading = true
-          add(fromData)
-            .then(res => {
-              if (fetchResult(res)) {
-                this.fetchList()
-                this.model.visible = false
-              }
-              this.model.confirmLoading = false
-            })
-        } else if (opType === 'update') {
-          // 修改
-          this.model.confirmLoading = true
-          update(fromData)
-            .then(res => {
-              if (fetchResult(res)) {
-                this.fetchList()
-                this.model.visible = false
-              }
-              this.model.confirmLoading = false
-            })
-        }
+        this.model.visible = false
       },
       modelHandleCancel () {
         this.model.visible = false

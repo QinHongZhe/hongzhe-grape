@@ -5,7 +5,7 @@
       :title="opType==='add'? '新增菜单' : '修改菜单'"
       :maskClosable="false"
       :width="640"
-      :confirmLoading="loading"
+      :confirmLoading="confirmLoading"
       @ok="ok"
       @cancel="cancel"
       okText="确认"
@@ -27,29 +27,11 @@
               :dropdown-style="{ maxHeight: '400px', overflow: 'auto' }"
               :tree-data="menuTree"
               :replaceFields="menuTreeReplaceFields"
-              placeholder="选择父菜单"
+              placeholder="选择父菜单, 如果为顶级菜单, 则可不选"
               tree-default-expand-all
               allowClear
             >
             </a-tree-select>
-          </a-form-model-item>
-          <a-form-model-item label="名称" prop="title">
-            <a-input v-model="form.title" />
-          </a-form-model-item>
-          <a-form-model-item label="权限" prop="permissions">
-            <a-input v-model="form.permissions" />
-          </a-form-model-item>
-          <a-form-model-item label="Vue组件" prop="component">
-            <a-input v-model="form.component" />
-          </a-form-model-item>
-          <a-form-model-item label="路径" prop="path">
-            <a-input v-model="form.path" />
-          </a-form-model-item>
-          <a-form-model-item label="排序" prop="orderNum">
-            <a-input-number v-model="form.orderNum" />
-          </a-form-model-item>
-          <a-form-model-item label="图标" prop="icon">
-            <a-input v-model="form.icon" />
           </a-form-model-item>
           <a-form-model-item label="类型" prop="type">
             <a-radio-group v-model="form.type" name="type" :defaultValue="1">
@@ -64,6 +46,24 @@
               </a-radio>
             </a-radio-group>
           </a-form-model-item>
+          <a-form-model-item label="名称" prop="title">
+            <a-input v-model="form.title" />
+          </a-form-model-item>
+          <a-form-model-item label="权限" prop="permissions">
+            <a-input v-model="form.permissions" />
+          </a-form-model-item>
+          <a-form-model-item label="排序" prop="orderNum">
+            <a-input-number v-model="form.orderNum" />
+          </a-form-model-item>
+          <a-form-model-item label="Vue组件" prop="component" v-if="form.type!==3">
+            <a-input v-model="form.component" />
+          </a-form-model-item>
+          <a-form-model-item label="路径" prop="path" v-if="form.type!==3">
+            <a-input v-model="form.path" />
+          </a-form-model-item>
+          <a-form-model-item label="图标" prop="icon">
+            <a-input v-model="form.icon" />
+          </a-form-model-item>
         </a-form-model>
       </a-spin>
     </a-modal>
@@ -72,9 +72,11 @@
 
 <script>
   import { TreeSelect } from 'ant-design-vue'
-  import { getNavTree } from '@/api/menu'
-  const defaultForm = {
-    title: ''
+  import { add, getNavTree, update } from '@/api/menu'
+  import { fetchResult } from '@/utils/fetchUtil'
+  const DEFAULT_FROM = {
+    orderNum: 1000,
+    type: 1
   }
   export default {
     name: 'Edit',
@@ -112,13 +114,25 @@
             span: 18
           }
         },
-        form: defaultForm,
+        confirmLoading: false,
+        form: { ...DEFAULT_FROM },
         rules: {
           title: [
-            { required: true, message: '名称不能为空', trigger: 'blur' }
+            { required: true, message: '名称不能为空', trigger: 'blur' },
+            { max: 12, message: '名称不能超过12位', trigger: 'blur' }
+          ],
+          permissions: [
+            { required: true, message: '权限不能为空', trigger: 'blur' },
+            { max: 256, message: '权限不能超过256位', trigger: 'blur' }
+          ],
+          orderNum: [
+            { required: true, message: '排序不能为空', trigger: 'blur' }
+          ],
+          type: [
+            { required: true, message: '权限类型不能为空', trigger: 'blur' }
           ]
         },
-        menuTree: [],
+        menuTree: undefined,
         menuTreeReplaceFields: {
           title: 'title',
           key: 'menuId',
@@ -133,21 +147,51 @@
       fetchMenuTree () {
         getNavTree(false)
           .then(res => {
-            this.menuTree = res.data
+            this.menuTree = fetchResult(res, false)
           })
       },
       ok () {
         this.$refs.ruleForm.validate(valid => {
           if (valid) {
-            this.$emit('ok', this.opType, { ...this.form })
-            this.$refs.ruleForm.resetFields()
+            const { opType } = this
+            if (opType === 'add') {
+              this.addMenu()
+            } else if (opType === 'update') {
+              this.updateMenu()
+            }
           } else {
             return false
           }
         })
       },
+      addMenu () {
+        const fromData = this.form
+        this.confirmLoading = true
+        add(fromData)
+          .then(res => {
+            if (fetchResult(res)) {
+              this.form = { ...DEFAULT_FROM }
+              this.fetchMenuTree()
+              this.$emit('ok', true)
+            }
+            this.confirmLoading = false
+          })
+      },
+      updateMenu () {
+        const fromData = this.form
+        this.confirmLoading = true
+        update(fromData)
+          .then(res => {
+            if (fetchResult(res)) {
+              this.form = { ...DEFAULT_FROM }
+              this.fetchMenuTree()
+              this.$emit('ok', true)
+            }
+            this.confirmLoading = false
+          })
+      },
       cancel () {
-        this.form = defaultForm
+        this.form = { ...DEFAULT_FROM }
         this.$emit('cancel')
       }
     },

@@ -61,7 +61,7 @@ public class User implements Serializable {
     private Integer status;
 
     /**
-     * 删除标记（1删除, 0 正常）
+     * 删除标记（1删除, 0 正常）暂未使用
      */
     private Integer deleted;
 

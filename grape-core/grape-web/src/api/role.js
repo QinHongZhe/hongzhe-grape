@@ -2,9 +2,8 @@ import request from '@/utils/request'
 
 const api = {
   commonApi: '/role',
-  listApi: '/role/list/enable',
-  roleMenuList: '/role/list/roleMenu',
-  updateRoleMenu: '/role/roleMenu'
+  roleMenuList: '/role/role-menu',
+  updateRoleMenu: '/role/role-menu'
 }
 
 export default api
@@ -14,13 +13,6 @@ export function getPageList (params) {
     url: api.commonApi,
     method: 'get',
     params: params
-  })
-}
-
-export function getList () {
-  return request('json', true)({
-    url: api.listApi,
-    method: 'get'
   })
 }
 

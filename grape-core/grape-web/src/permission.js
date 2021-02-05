@@ -6,6 +6,7 @@ import '@/components/NProgress/nprogress.less' // progress bar custom style
 import { setDocumentTitle, domTitle } from '@/utils/domUtil'
 import { ACCESS_TOKEN } from '@/store/mutation-types'
 import { i18nRender } from '@/locales'
+import notification from 'ant-design-vue/lib/notification'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
@@ -47,6 +48,10 @@ router.beforeEach((to, from, next) => {
           })
           .catch((error) => {
             console.log(error)
+            notification.error({
+              message: '提示',
+              description: '该用户角色或者权限, 无法登录'
+            })
             // 失败时，获取用户信息失败时，调用登出，来清空历史保留信息
             store.dispatch('Logout').then(() => {
               next({ path: loginRoutePath, query: { redirect: to.fullPath } })

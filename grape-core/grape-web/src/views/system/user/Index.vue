@@ -88,6 +88,9 @@
             <a-tag v-if="$auth('user:update')" color="purple" @click="showMode('update', record)" style="cursor:pointer">
               修改
             </a-tag>
+            <a-tag v-if="$auth('user:resetPassword')" color="cyan" @click="resetPasswordModelOpen(record)" style="cursor:pointer">
+              重置密码
+            </a-tag>
             <a-tag v-if="$auth('user:delete')" color="red" @click="removeById(record)" style="cursor:pointer">
               删除
             </a-tag>
@@ -101,9 +104,18 @@
       :visible="model.visible"
       :loading="model.confirmLoading"
       :from-data="model.form"
+      :source-role-ids="model.sourceRoleIds"
       :opType="model.opType"
       @cancel="modelHandleCancel"
       @ok="modelHandleOk"
+    />
+    <reset-password-model
+      v-if="$auth('user:resetPassword')"
+      ref="resetPasswordModel"
+      :visible="resetPasswordMode.visible"
+      :user-id="resetPasswordMode.userId"
+      :user-name="resetPasswordMode.userName"
+      @close="resetPasswordModelClose"
     />
   </page-header-wrapper>
 </template>
@@ -111,7 +123,8 @@
 <script>
   import { STable } from '@/components'
   import EditModel from '@/views/system/user/EditModel'
-  import { getPageList, updateStatus, deleteById, add, update } from '@/api/user'
+  import ResetPasswordModel from '@/views/system/user/ResetPasswordModel'
+  import { getPageList, getRoleByUser, updateStatus, deleteById } from '@/api/user'
   import { fetchResult } from '@/utils/fetchUtil'
   import { transformCellText } from '@/utils/tableUtils'
 
@@ -162,12 +175,12 @@
       width: 260
     }
   ]
-
   export default {
     name: 'TableManage',
     components: {
       STable,
-      EditModel
+      EditModel,
+      ResetPasswordModel
     },
     data () {
       return {
@@ -192,7 +205,13 @@
           visible: false,
           confirmLoading: false,
           form: {},
+          sourceRoleIds: [],
           opType: null
+        },
+        resetPasswordMode: {
+          visible: false,
+          userId: undefined,
+          userName: undefined
         }
       }
     },
@@ -271,41 +290,45 @@
       showMode (type, record) {
         if (type === 'update') {
           // 修改
-          this.model.form = record
-          this.model.opType = 'update'
+          getRoleByUser(record.userId)
+            .then(res => {
+              const data = fetchResult(res, false)
+              const roleIds = []
+              if (data) {
+                data.forEach(d => {
+                  if (d && d.roleId) {
+                    roleIds.push(d.roleId)
+                  }
+                })
+              }
+              this.model.form = record
+              this.model.sourceRoleIds = roleIds
+              this.model.opType = 'update'
+            })
         } else {
           // 新增
           this.model.opType = 'add'
         }
         this.model.visible = true
       },
-      modelHandleOk (opType, fromData) {
-        if (opType === 'add') {
-          // 新增
-          this.model.confirmLoading = true
-          add(fromData)
-            .then(res => {
-              if (fetchResult(res)) {
-                this.fetchList()
-                this.model.visible = false
-              }
-              this.model.confirmLoading = false
-            })
-        } else if (opType === 'update') {
-          // 修改
-          this.model.confirmLoading = true
-          update(fromData)
-            .then(res => {
-              if (fetchResult(res)) {
-                this.fetchList()
-                this.model.visible = false
-              }
-              this.model.confirmLoading = false
-            })
+      modelHandleOk (result) {
+        if (result) {
+          this.fetchList()
         }
+        this.model.visible = false
       },
       modelHandleCancel () {
         this.model.visible = false
+      },
+      resetPasswordModelOpen (record) {
+        this.resetPasswordMode = {
+          visible: true,
+          userId: record.userId,
+          userName: record.name
+        }
+      },
+      resetPasswordModelClose () {
+        this.resetPasswordMode.visible = false
       }
     }
   }

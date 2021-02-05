@@ -71,9 +71,8 @@ const user = {
             commit('SET_ROLES', roles)
             commit('SET_INFO', result)
           } else {
-            reject(new Error('用户的角色信息为空'))
+            reject(new Error('该用户角色或者权限, 无法登录'))
           }
-          console.log(result.avatar)
           commit('SET_NAME', { name: result.name, welcome: welcome() })
           commit('SET_AVATAR', result.avatar)
 

@@ -4,7 +4,6 @@ import com.gitee.starblues.grape.rest.common.BaseResource;
 import com.gitee.starblues.grape.rest.common.Result;
 import com.gitee.starblues.grape.rest.common.enums.ApiEnum;
 import com.gitee.starblues.grape.core.security.MenuService;
-import com.gitee.starblues.grape.core.security.model.MenuTree;
 import com.gitee.starblues.grape.rest.model.param.menu.MenuAddParam;
 import com.gitee.starblues.grape.rest.model.param.menu.MenuUpdatedParam;
 import io.swagger.annotations.Api;
@@ -17,7 +16,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 import static com.gitee.starblues.grape.rest.common.Result.*;
 import static com.gitee.starblues.grape.rest.common.ResultUtils.errorLog;
 
@@ -35,21 +33,34 @@ public class MenuResource extends BaseResource {
 
     private final MenuService menuService;
 
-    @GetMapping("/tree")
-    @PreAuthorize("@auth.permission('menu:query')")
-    @ApiOperation("查询菜单树")
-    public Result<List<MenuTree>> getMenuTree(@RequestParam("havePluginMenu") Boolean havePluginMenu) {
+    @PostMapping
+    @PreAuthorize("@auth.permission('menu:add')")
+    @ApiOperation("添加菜单")
+    public Result<String> add(@RequestBody @Valid MenuAddParam param){
         try {
-            List<MenuTree> menuTrees = menuService.getMenuTreeByCurrentUser(havePluginMenu);
-            return success(ApiEnum.GET_SUCCESS, menuTrees);
+            menuService.addMenu(param);
+            return success(ApiEnum.ADD_SUCCESS, "添加菜单成功");
         } catch (Exception e) {
-            errorLog(log, e, "获取菜单树失败.");
-            return failure(ApiEnum.GET_ERROR, e);
+            errorLog(log, e, "添加菜单 '{}' 信息失败 {}", param.getTitle(), e.getMessage());
+            return failure(ApiEnum.ADD_ERROR, "添加菜单失败.", e);
+        }
+    }
+
+    @PutMapping
+    @PreAuthorize("@auth.permission('menu:update')")
+    @ApiOperation("修改菜单")
+    public Result<String> update(@RequestBody @Valid MenuUpdatedParam param){
+        try {
+            menuService.updateMenu(param);
+            return success(ApiEnum.UPDATE_SUCCESS, "修改菜单成功");
+        } catch (Exception e) {
+            errorLog(log, e, "更新菜单 '{}' 信息失败 {}", param.getMenuId(), e.getMessage());
+            return failure(ApiEnum.UPDATE_ERROR, "修改菜单失败.", e);
         }
     }
 
     @PutMapping("{menuId}/{enable}")
-    @PreAuthorize("@auth.permission('menu:updateStatus')")
+    @PreAuthorize("@auth.permission('menu:update')")
     @ApiOperation("修改菜单状态")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "menuId", value = "菜单id", paramType = "path", required = true),
@@ -82,29 +93,5 @@ public class MenuResource extends BaseResource {
         }
     }
 
-    @PostMapping
-    @PreAuthorize("@auth.permission('menu:add')")
-    @ApiOperation("添加菜单")
-    public Result<String> add(@RequestBody @Valid MenuAddParam param){
-        try {
-            menuService.addMenu(param);
-            return success(ApiEnum.ADD_SUCCESS, "添加菜单成功");
-        } catch (Exception e) {
-            errorLog(log, e, "添加菜单 '{}' 信息失败 {}", param.getTitle(), e.getMessage());
-            return failure(ApiEnum.ADD_ERROR, "添加菜单失败.", e);
-        }
-    }
 
-    @PutMapping
-    @PreAuthorize("@auth.permission('menu:update')")
-    @ApiOperation("修改菜单")
-    public Result<String> update(@RequestBody @Valid MenuUpdatedParam param){
-        try {
-            menuService.updateMenu(param);
-            return success(ApiEnum.UPDATE_SUCCESS, "修改菜单成功");
-        } catch (Exception e) {
-            errorLog(log, e, "更新菜单 '{}' 信息失败 {}", param.getMenuId(), e.getMessage());
-            return failure(ApiEnum.UPDATE_ERROR, "修改菜单失败.", e);
-        }
-    }
 }

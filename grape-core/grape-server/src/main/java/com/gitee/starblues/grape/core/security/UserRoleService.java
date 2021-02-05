@@ -29,6 +29,13 @@ public interface UserRoleService extends IService<UserRole> {
      */
     void removeByRoleId(String roleId);
 
+
+    /**
+     * 删除角色与用户的关联
+     * @param userId 用户id
+     */
+    void removeByUserId(String userId);
+
     /**
      * 删除角色与用户的关联
      * @param userId 用户id

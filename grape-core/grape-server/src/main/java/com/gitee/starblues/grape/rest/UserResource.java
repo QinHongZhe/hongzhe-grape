@@ -1,9 +1,14 @@
 package com.gitee.starblues.grape.rest;
 
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
+import com.gitee.starblues.grape.core.security.RoleService;
+import com.gitee.starblues.grape.core.security.UserRoleService;
 import com.gitee.starblues.grape.core.security.UserService;
 import com.gitee.starblues.grape.repository.databases.entity.Role;
+import com.gitee.starblues.grape.repository.databases.entity.UserRole;
 import com.gitee.starblues.grape.repository.databases.model.UserHasRole;
 import com.gitee.starblues.grape.rest.common.BaseResource;
 import com.gitee.starblues.grape.rest.common.Result;
@@ -22,6 +27,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
+
+import java.util.List;
+
 import static com.gitee.starblues.grape.rest.common.Result.*;
 import static com.gitee.starblues.grape.rest.common.ResultUtils.errorLog;
 
@@ -39,6 +48,8 @@ import static com.gitee.starblues.grape.rest.common.ResultUtils.errorLog;
 public class UserResource extends BaseResource {
 
     private final UserService userService;
+    private final RoleService roleService;
+    private final UserRoleService userRoleService;
 
     @GetMapping()
     @PreAuthorize("@auth.permission('user:query')")
@@ -60,6 +71,24 @@ public class UserResource extends BaseResource {
         }
     }
 
+    @GetMapping("/enable-roles")
+    @PreAuthorize("@auth.permission('user:update')")
+    @ApiOperation(value = "查询启动的角色", tags = "修改用户时, 查询所有启用的角色")
+    public Result<List<Role>> getRoleList() {
+        LambdaQueryWrapper<Role> wrapper = Wrappers.<Role>lambdaQuery()
+                .eq(Role::getDeleted, 0)
+                .eq(Role::getStatus, 1)
+                .orderByDesc(Role::getGmtCreated);
+        return success(ApiEnum.GET_SUCCESS, roleService.list(wrapper));
+    }
+
+    @GetMapping("/{userId}/role")
+    @PreAuthorize("@auth.permission('user:update')")
+    @ApiOperation(value = "查询用户所属角色", tags = "修改用户时, 查询当前用户所属的角色")
+    public Result<List<UserRole>> getRoleByUser(@PathVariable("userId") String userId) {
+        return success(ApiEnum.GET_SUCCESS, userRoleService.getByUserId(userId));
+    }
+
     @PutMapping
     @PreAuthorize("@auth.permission('user:update')")
     @ApiOperation("修改用户")
@@ -74,14 +103,13 @@ public class UserResource extends BaseResource {
     }
 
     @PutMapping("{userId}/{status}")
-    @PreAuthorize("@auth.permission('user:updateStatus')")
+    @PreAuthorize("@auth.permission('user:update')")
     @ApiOperation("修改用户状态")
     @ApiImplicitParams({
             @ApiImplicitParam(name = "userId", value = "用户id", paramType = "path", required = true),
             @ApiImplicitParam(name = "status", value = "状态（1启用, 0停用）", paramType = "path", required = true)
     })
-    public Result<Role> updateStatus(@PathVariable("userId") String userId,
-                            @PathVariable("status") Integer status){
+    public Result<Role> updateStatus(@PathVariable("userId") String userId, @PathVariable("status") Integer status){
         String message = status == 1 ? "启用" : "禁用";
         try {
             userService.updateStatus(userId, status);

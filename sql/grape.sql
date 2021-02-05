@@ -11,7 +11,7 @@
  Target Server Version : 50648
  File Encoding         : 65001
 
- Date: 31/01/2021 13:38:13
+ Date: 05/02/2021 16:20:37
 */
 
 SET NAMES utf8mb4;
@@ -106,14 +106,30 @@ CREATE TABLE `menu`  (
 -- ----------------------------
 -- Records of menu
 -- ----------------------------
+INSERT INTO `menu` VALUES ('0db4da0a636bbf7d94043b58859d0787', '104', 3, '删除客户端', 'oauthClient:delete', NULL, 1044, NULL, NULL, 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-02-05 15:41:21', 'admin', '2021-02-05 15:42:55');
 INSERT INTO `menu` VALUES ('100', '0', 1, '系统管理', 'system', 'RouteView', 100, 'tool', '', 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-01-01 08:08:08', 'admin', '2021-01-01 08:08:08');
 INSERT INTO `menu` VALUES ('101', '100', 2, '菜单管理', 'menu-mange', 'MenuManage', 101, 'menu', '/system/menu-mange', 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-01-01 08:08:08', 'admin', '2021-01-28 17:10:25');
-INSERT INTO `menu` VALUES ('102', '100', 2, '角色管理', 'role-manage', 'RoleManage', 102, 'team', '/system/role-manage', 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-01-01 08:08:08', 'admin', '2021-01-28 17:10:39');
-INSERT INTO `menu` VALUES ('103', '100', 2, '用户管理', 'user-mange', 'UserManage', 103, 'user', '/system/user-mange', 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-01-01 08:08:08', 'admin', '2021-01-01 08:08:08');
-INSERT INTO `menu` VALUES ('104', '100', 2, '客户端授权', 'oauth-client-manage', 'OAuthClientManage', 104, 'key', '/system/oauth-client-manage', 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-01-01 08:08:08', 'admin', '2021-01-01 08:08:08');
-INSERT INTO `menu` VALUES ('105', '100', 2, '登录日志', 'login-log', 'LoginLogManage', 105, 'container', '/system/login-log-manage', 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-01-01 08:08:08', 'admin', '2021-01-01 08:08:08');
+INSERT INTO `menu` VALUES ('102', '100', 2, '角色管理', 'role:query', 'RoleManage', 102, 'team', '/system/role-manage', 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-01-01 08:08:08', 'admin', '2021-02-05 15:46:21');
+INSERT INTO `menu` VALUES ('103', '100', 2, '用户管理', 'user:query', 'UserManage', 103, 'user', '/system/user-mange', 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-01-01 08:08:08', 'admin', '2021-02-05 15:46:05');
+INSERT INTO `menu` VALUES ('104', '100', 2, '客户端授权', 'oauthClient:query', 'OAuthClientManage', 104, 'key', '/system/oauth-client-manage', 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-01-01 08:08:08', 'admin', '2021-02-05 15:45:51');
+INSERT INTO `menu` VALUES ('105', '100', 2, '登录日志', 'loginLog:query', 'LoginLogManage', 105, 'container', '/system/login-log-manage', 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-01-01 08:08:08', 'admin', '2021-01-01 08:08:08');
+INSERT INTO `menu` VALUES ('16697d9f8e2e80dc6259735f77a21c57', '102', 3, '删除角色', 'role:delete', NULL, 1025, NULL, NULL, 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-02-05 15:31:36', 'admin', '2021-02-05 15:33:42');
 INSERT INTO `menu` VALUES ('200', '0', 1, '插件模块', 'plugin', 'RouteView', 200, 'api', NULL, 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-01-01 08:08:08', 'admin', '2021-01-28 17:10:56');
-INSERT INTO `menu` VALUES ('201', '200', 2, '插件管理', 'plugin-mange', 'PluginManage', 201, 'pushpin', '/plugin/plugin-manage', 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-01-01 08:08:08', 'admin', '2021-01-28 17:10:56');
+INSERT INTO `menu` VALUES ('201', '200', 2, '插件管理', 'plugin:query', 'PluginManage', 201, 'pushpin', '/plugin/plugin-manage', 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-01-01 08:08:08', 'admin', '2021-02-05 15:49:16');
+INSERT INTO `menu` VALUES ('284ea6444b2019b35b04cf0431e71f4f', '101', 3, '修改菜单', 'menu:update', NULL, 1012, NULL, NULL, 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-02-05 11:39:14', 'admin', '2021-02-05 15:34:16');
+INSERT INTO `menu` VALUES ('3abb3df2fb6a6e0e935ce0c48d60cc18', '103', 3, '重置密码', 'user:resetPassword', NULL, 1034, NULL, NULL, 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-02-05 15:39:06', 'admin', '2021-02-05 15:39:13');
+INSERT INTO `menu` VALUES ('4de5ae6164d2775234afcaae8c0200ba', '101', 3, '新增菜单', 'menu:add', NULL, 1011, NULL, NULL, 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-02-05 11:26:21', 'admin', '2021-02-05 15:34:07');
+INSERT INTO `menu` VALUES ('53b2efe2a03f235206f6779ba4dec994', '103', 3, '修改用户', 'user:update', NULL, 1033, NULL, NULL, 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-02-05 15:37:40', 'admin', '2021-02-05 15:38:10');
+INSERT INTO `menu` VALUES ('69d149990d7463fb03ec04751d88f73c', '102', 3, '添加角色', 'role:add', NULL, 1022, NULL, NULL, 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-02-05 15:30:26', 'admin', '2021-02-05 15:33:19');
+INSERT INTO `menu` VALUES ('7271a7fe4e3de307c8ada965f2bff9b6', '102', 3, '分配权限', 'role:setMenu', NULL, 1024, NULL, NULL, 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-02-05 15:30:00', 'admin', '2021-02-05 15:33:35');
+INSERT INTO `menu` VALUES ('798208edefa950debc13a08060a0f865', '103', 3, '删除用户', 'user:delete', NULL, 1035, NULL, NULL, 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-02-05 15:39:37', 'admin', '2021-02-05 15:39:37');
+INSERT INTO `menu` VALUES ('bf511230be6e8054c02c2551cef19a03', '101', 3, '删除菜单', 'menu:delete', NULL, 1013, NULL, NULL, 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-02-05 14:19:52', 'admin', '2021-02-05 15:34:22');
+INSERT INTO `menu` VALUES ('c475623eac48db229e5ed6622bd9deea', '104', 3, '修改客户端', 'oauthClient:update', NULL, 1043, NULL, NULL, 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-02-05 15:40:58', 'admin', '2021-02-05 15:43:27');
+INSERT INTO `menu` VALUES ('cd91a7ea6ce0e6eaab3696f12cf7b1d4', '103', 3, '新增用户', 'user:add', NULL, 1032, NULL, NULL, 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-02-05 15:38:02', 'admin', '2021-02-05 15:38:17');
+INSERT INTO `menu` VALUES ('code-generator', '200', 2, '代码生成', 'code-generator', NULL, 2147483647, 'code', '/code-generator', 1, 0, '', 1, 'grape-plugin-system-tools', 'system-tools-web', '/grape-plugin-system-tools/index.html', '/grape-plugin-system-tools', 'NOT_FOUND', '2021-01-31 14:06:51', 'NOT_FOUND', '2021-02-05 15:56:37');
+INSERT INTO `menu` VALUES ('d0fa2c55ffe1d336ff6b84fd0fffc07f', '104', 3, '新增客户端', 'oauthClient:add', NULL, 1042, NULL, NULL, 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-02-05 15:43:43', 'admin', '2021-02-05 15:43:43');
+INSERT INTO `menu` VALUES ('d37c4cda3010f1bf20ae28945f1f3404', '102', 3, '修改角色', 'role:update', NULL, 1023, NULL, NULL, 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-02-05 15:30:47', 'admin', '2021-02-05 15:33:26');
+INSERT INTO `menu` VALUES ('fe9075b88d8925d94d263814f78947a9', '201', 3, '操作插件', 'plugin:operate', NULL, 2011, NULL, NULL, 1, 0, '', 0, NULL, NULL, NULL, NULL, 'admin', '2021-02-05 15:49:54', 'admin', '2021-02-05 15:50:01');
 
 -- ----------------------------
 -- Table structure for oauth_client_details
@@ -165,8 +181,8 @@ CREATE TABLE `role`  (
 -- ----------------------------
 -- Records of role
 -- ----------------------------
-INSERT INTO `role` VALUES ('1', 'admin', 'super_admin', 1, 0, 'admin', '2021-01-01 08:08:08', 'admin', '2021-01-08 15:01:08', '超级管理员');
-INSERT INTO `role` VALUES ('2', '普通角色', 'common', 1, 0, 'admin', '2021-01-08 15:01:08', 'admin', '2021-01-08 15:01:08', '普通角色');
+INSERT INTO `role` VALUES ('1', 'admin', 'super_admin', 1, 0, '', '2021-01-01 08:08:08', 'admin', '2021-01-08 15:01:08', '超级管理员');
+
 -- ----------------------------
 -- Table structure for role_menu
 -- ----------------------------
@@ -175,17 +191,18 @@ CREATE TABLE `role_menu`  (
   `id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT 'id',
   `role_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '角色id',
   `menu_id` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '菜单id',
+  `is_parent` int(1) NOT NULL COMMENT '是否父节点（0否 1是）',
   PRIMARY KEY (`id`) USING BTREE
 ) ENGINE = InnoDB CHARACTER SET = utf8 COLLATE = utf8_general_ci COMMENT = '角色菜单权限表' ROW_FORMAT = Compact;
 
 -- ----------------------------
 -- Records of role_menu
 -- ----------------------------
-INSERT INTO `role_menu` VALUES ('1', '1', '1');
-INSERT INTO `role_menu` VALUES ('7136b7316faf4d0faa4cb03583754862', '917d7b3f19da4b0bfd31d747fb5971ad', '102');
-INSERT INTO `role_menu` VALUES ('873aefbb44de40819ec3289484e1e0db', '917d7b3f19da4b0bfd31d747fb5971ad', '100');
-INSERT INTO `role_menu` VALUES ('ba5128fae2b74be1871d8a1002be49c9', '917d7b3f19da4b0bfd31d747fb5971ad', '101');
-INSERT INTO `role_menu` VALUES ('ba77c34d9d144deb9bf146c71b309ac5', '917d7b3f19da4b0bfd31d747fb5971ad', '103');
+INSERT INTO `role_menu` VALUES ('1', '1', '1', 0);
+INSERT INTO `role_menu` VALUES ('7136b7316faf4d0faa4cb03583754862', '917d7b3f19da4b0bfd31d747fb5971ad', '102', 0);
+INSERT INTO `role_menu` VALUES ('873aefbb44de40819ec3289484e1e0db', '917d7b3f19da4b0bfd31d747fb5971ad', '100', 0);
+INSERT INTO `role_menu` VALUES ('ba5128fae2b74be1871d8a1002be49c9', '917d7b3f19da4b0bfd31d747fb5971ad', '101', 0);
+INSERT INTO `role_menu` VALUES ('ba77c34d9d144deb9bf146c71b309ac5', '917d7b3f19da4b0bfd31d747fb5971ad', '103', 0);
 
 -- ----------------------------
 -- Table structure for user
@@ -199,7 +216,7 @@ CREATE TABLE `user`  (
   `username` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '用户名',
   `password` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '密码(加密后)',
   `status` int(1) NOT NULL DEFAULT 1 COMMENT '帐号状态（1启用, 0停用）',
-  `deleted` int(1) NOT NULL DEFAULT 0 COMMENT '删除标记（1删除, 0 正常）',
+  `deleted` int(1) NOT NULL DEFAULT 0 COMMENT '删除标记（1删除, 0 正常）暂未使用',
   `locked` int(6) NOT NULL DEFAULT 0 COMMENT '是否被锁(小于等于5表示未被锁, 大于5表示被锁)',
   `create_user` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建用户',
   `gmt_created` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL COMMENT '创建时间',
@@ -214,7 +231,7 @@ CREATE TABLE `user`  (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', 'admin', '16666666666', '123@qq.com', 'admin', '$2a$10$IqjSzOzTpMX79DnxS7aBz.A1.uqR.DvuvMtx9TaGmwpsxgJDFW8wS', 1, 0, 0, 'admin', '2021-01-01 08:08:08', 'admin', 'admin', '2e418339355940a9b83f72d597a6da2c.jpg', '127.0.0.1', '2021-01-31 13:25:17');
+INSERT INTO `user` VALUES ('1', 'admin', '16666666666', '123@qq.com', 'admin', '$2a$10$grIYlsR1p2VvKambuuwSLO/R/3q.pauwrTiuxw36yyqvxTynjLPTG', 1, 0, 0, 'admin', '2021-01-01 08:08:08', 'admin', 'admin', '2e418339355940a9b83f72d597a6da2c.jpg', '127.0.0.1', '2021-02-05 16:17:16');
 
 -- ----------------------------
 -- Table structure for user_role

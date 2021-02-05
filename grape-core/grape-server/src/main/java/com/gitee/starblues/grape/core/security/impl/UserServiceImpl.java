@@ -150,7 +150,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public synchronized void addUser(UserAddParam param) throws Exception {
+    public void addUser(UserAddParam param) throws Exception {
         Preconditions.checkNotNull(param, "UserAddParam 参数不能为空");
         String username = param.getUsername();
         Preconditions.checkArgument(!StrUtil.isEmpty(username), "用户名不能为空");
@@ -166,6 +166,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
             User user = new User();
             BeanUtils.copyProperties(param, user);
+            // 设置密码
+            String password = user.getPassword();
+            if(!StrUtil.isEmpty(password)){
+                user.setPassword(passwordEncoder.encode(password));
+            }
             user.setUserId(IDUtils.uuid());
             user.setDeleted(0);
             user.setLocked(0);
@@ -178,8 +183,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public synchronized void updateUser(UserUpdateParam param) throws Exception {
+    public void updateUser(UserUpdateParam param) throws Exception {
         Preconditions.checkNotNull(param, "UserAddParam 参数不能为空");
         Preconditions.checkArgument(!StrUtil.isEmpty(param.getUserId()), "用户id不能为空");
         Set<String> roleIds = param.getRoleIds();
@@ -201,28 +207,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             user.setGmtModified(getCurrentUsername());
             updateById(user);
             // 处理角色
-            List<UserRole> userRoles = userRoleService.getByUserId(param.getUserId());
-            Set<String> removeIds = null;
-            Set<String> addRoleIds = null;
-            if(userRoles == null || userRoles.isEmpty()){
-                addRoleIds = roleIds;
-            } else {
-                Set<String> databaseUserRoleIds = userRoles.stream()
-                        .filter(userRole -> userRole != null && !StrUtil.isEmpty(userRole.getRoleId()))
-                        .map(userRole -> userRole.getRoleId())
-                        .collect(Collectors.toSet());
-                addRoleIds = Sets.difference(roleIds, databaseUserRoleIds);
-                removeIds = Sets.difference(databaseUserRoleIds, roleIds);
-            }
-            if(!addRoleIds.isEmpty()){
-                // 更新时, 新增的角色关联
-                userRoleService.add(param.getUserId(), addRoleIds);
-            }
-
-            if(removeIds != null && !removeIds.isEmpty()){
-                // 更新时, 删除的角色关联
-                userRoleService.removeByRoleId(param.getUserId(), removeIds);
-            }
+            userRoleService.removeByUserId(param.getUserId());
+            userRoleService.add(param.getUserId(), param.getRoleIds());
         }
     }
 
@@ -271,7 +257,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     @Override
-    public synchronized void delete(String userId) throws Exception {
+    public void delete(String userId) throws Exception {
         if(StrUtil.isEmpty(userId)){
             return;
         }

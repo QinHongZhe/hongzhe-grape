@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 const api = {
-  navTree: '/menu/tree',
+  navTree: '/current-user/menu-tree',
   commonApi: '/menu'
 }
 

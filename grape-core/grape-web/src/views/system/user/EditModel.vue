@@ -4,7 +4,7 @@
     :title="opType==='add'? '新增用户' : '修改用户'"
     :maskClosable="false"
     :width="640"
-    :confirmLoading="loading"
+    :confirmLoading="confirmLoading"
     @ok="ok"
     @cancel="cancel"
     okText="确认"
@@ -26,7 +26,7 @@
             notFoundContent="没有可以的角色"
             :showSearch="true"
             @change="handleChange">
-            <a-select-option v-for="role in roles" :key="role.roleId">
+            <a-select-option v-for="role in roles" :key="role.roleId" :value="role.roleId">
               {{ role.name }}
             </a-select-option>
           </a-select>
@@ -63,8 +63,9 @@
 
 <script>
   import { FormModel } from 'ant-design-vue'
-  import { getList } from '@/api/role'
   import { fetchResult } from '@/utils/fetchUtil'
+  import { password } from '@/utils/password'
+  import { add, update, getEnableRoles } from '@/api/user'
   const defaultForm = {
     roleIds: [],
     status: 1
@@ -85,6 +86,11 @@
         required: false,
         default: () => {}
       },
+      sourceRoleIds: {
+        type: Array,
+        required: false,
+        default: () => []
+      },
       opType: {
         type: String,
         required: false,
@@ -96,7 +102,7 @@
       }
     },
     created () {
-      getList()
+      getEnableRoles()
         .then(res => {
           this.roles = fetchResult(res, false)
         })
@@ -111,6 +117,7 @@
             span: 14
           }
         },
+        confirmLoading: false,
         roles: {},
         form: defaultForm,
         roleIds: [],
@@ -119,7 +126,8 @@
             { required: true, message: '角色不能为空', trigger: 'blur' }
           ],
           name: [
-            { required: true, message: '名称不能为空', trigger: 'blur' }
+            { required: true, message: '名称不能为空', trigger: 'blur' },
+            { max: 12, message: '名称不能超过12位', trigger: 'blur' }
           ],
           username: [
             { required: true, message: '用户名不能为空', trigger: 'blur' },
@@ -140,29 +148,56 @@
       ok () {
         this.$refs.ruleForm.validate(valid => {
           if (valid) {
-            this.$emit('ok', this.opType, { ...this.form })
-            this.$refs.ruleForm.resetFields()
-          } else {
-            return false
+            const { opType } = this
+            if (opType === 'add') {
+              this.addUser()
+            } else if (opType === 'update') {
+              this.updateUser()
+            }
           }
         })
       },
       cancel () {
-        this.form = defaultForm
+        this.roleIds = []
+        this.$refs.ruleForm.resetFields()
         this.$emit('cancel')
+      },
+      addUser () {
+        const fromData = { ...this.form }
+        const sourcePassword = fromData.password
+        if (sourcePassword) {
+          fromData.password = password.encryption(sourcePassword)
+        }
+        this.confirmLoading = true
+        add(fromData)
+          .then(res => {
+            if (fetchResult(res)) {
+              this.roleIds = []
+              this.$refs.ruleForm.resetFields()
+              this.$emit('ok', true)
+            }
+            this.confirmLoading = false
+          })
+      },
+      updateUser () {
+        const fromData = this.form
+        fromData.roleIds = this.roleIds
+        update(fromData)
+          .then(res => {
+            if (fetchResult(res)) {
+              this.roleIds = []
+              this.$refs.ruleForm.resetFields()
+              this.$emit('ok', true)
+            }
+            this.confirmLoading = false
+          })
       }
     },
     watch: {
       fromData () {
         if (this.opType === 'update') {
           this.form = { ...this.fromData }
-          const roleNames = this.fromData.roleNames
-          this.roleIds = []
-          if (roleNames) {
-            this.roleIds = roleNames.split(',')
-          } else {
-            this.roleIds = []
-          }
+          this.roleIds = this.sourceRoleIds
         }
       }
     }

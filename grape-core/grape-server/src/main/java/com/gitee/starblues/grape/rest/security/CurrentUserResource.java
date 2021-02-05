@@ -1,6 +1,8 @@
 package com.gitee.starblues.grape.rest.security;
 
 import com.gitee.starblues.grape.core.security.CurrentUserService;
+import com.gitee.starblues.grape.core.security.MenuService;
+import com.gitee.starblues.grape.core.security.model.MenuTree;
 import com.gitee.starblues.grape.rest.common.BaseResource;
 import com.gitee.starblues.grape.rest.common.Result;
 import com.gitee.starblues.grape.rest.common.enums.ApiEnum;
@@ -10,11 +12,13 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 
+import java.util.List;
 import java.util.Objects;
 import static com.gitee.starblues.grape.rest.common.Result.*;
 import static com.gitee.starblues.grape.rest.common.ResultUtils.errorLog;
@@ -32,7 +36,19 @@ import static com.gitee.starblues.grape.rest.common.ResultUtils.errorLog;
 public class CurrentUserResource extends BaseResource {
 
     private final CurrentUserService userService;
+    private final MenuService menuService;
 
+    @GetMapping("/menu-tree")
+    @ApiOperation("查询菜单树")
+    public Result<List<MenuTree>> getMenuTree(@RequestParam("havePluginMenu") Boolean havePluginMenu) {
+        try {
+            List<MenuTree> menuTrees = menuService.getMenuTreeByCurrentUser(havePluginMenu);
+            return success(ApiEnum.GET_SUCCESS, menuTrees);
+        } catch (Exception e) {
+            errorLog(log, e, "获取菜单树失败.");
+            return failure(ApiEnum.GET_ERROR, e);
+        }
+    }
 
     @PutMapping("/password")
     @ApiOperation("修改密码")

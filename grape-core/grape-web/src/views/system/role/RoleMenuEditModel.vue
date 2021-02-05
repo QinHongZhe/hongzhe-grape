@@ -10,7 +10,7 @@
     okText="确认"
     cancelText="取消"
   >
-    <a-spin :spinning="loading">
+    <a-spin :spinning="loadingTree">
       <a-tree
         v-model="menuIds"
         style="width: 100%"
@@ -18,7 +18,7 @@
         :tree-data="menuTree"
         checkable
         :replaceFields="menuTreeReplaceFields"
-        :defaultExpandAll="ture"
+        :defaultExpandAll="true"
         @check="selectMenu"
       >
       </a-tree>
@@ -29,7 +29,6 @@
 <script>
   import { getRoleMenuList, updateRoleMenu } from '@/api/role'
   import { Tree } from 'ant-design-vue'
-  import { getNavTree } from '@/api/menu'
   import { fetchResult } from '@/utils/fetchUtil'
   export default {
     name: 'RoleMenuEditModel',
@@ -54,34 +53,32 @@
     },
     data () {
       return {
+        loadingTree: false,
         menuIds: [],
         menuTree: [],
         menuTreeReplaceFields: {
           title: 'title',
-          key: 'menuId',
-          value: 'menuId'
+          key: 'menuId'
         },
         parentMenuIds: []
       }
     },
-    created () {
-      this.fetchMenuTree()
-    },
     mounted () {
-      getRoleMenuList({
-        roleId: this.roleId
-      }).then(res => {
-        this.menuIds = res.data
-      })
+      this.fetchRoleMenu()
     },
     methods: {
-      fetchMenuTree () {
-        getNavTree(false)
-          .then(res => {
-            if (fetchResult(res, false, true)) {
-              this.menuTree = res.data
-            }
-          })
+      fetchRoleMenu () {
+        this.loadingTree = true
+        getRoleMenuList({
+          roleId: this.roleId
+        }).then(res => {
+          const result = fetchResult(res, false, true)
+          if (result) {
+            this.menuTree = result.menuTree
+            this.menuIds = result.menuIds
+          }
+          this.loadingTree = false
+        })
       },
       ok () {
         updateRoleMenu({

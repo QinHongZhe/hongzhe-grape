@@ -59,8 +59,9 @@
         group by
             user_id
         order by
-            u.gmt_modified desc
+            u.gmt_created desc
     </select>
+
 
     <!--通过角色id更新用户状态-->
     <update id="updateStatusByRoleId">

@@ -3,6 +3,7 @@ package com.gitee.starblues.grape.rest.model.param.user;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -21,6 +22,7 @@ public class UserUpdatePasswordParam {
 
     @ApiModelProperty(value = "新密码", required = true)
     @NotEmpty(message = "新密码不能为空")
+    @Length(min = 6, message = "新密码长度不能小于6位")
     private String newPassword;
 
     @ApiModelProperty(value = "确认新密码", required = true)

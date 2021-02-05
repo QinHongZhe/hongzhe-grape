@@ -56,6 +56,16 @@ public class UserRoleServiceImpl extends ServiceImpl<UserRoleMapper, UserRole> i
     }
 
     @Override
+    public void removeByUserId(String userId) {
+        if(StrUtil.isEmpty(userId)) {
+            return;
+        }
+        Wrapper<UserRole> wrapper = Wrappers.<UserRole>lambdaQuery()
+                .eq(UserRole::getUserId, userId);
+        remove(wrapper);
+    }
+
+    @Override
     public void removeByRoleId(String userId, Set<String> roleIds) {
         if(StrUtil.isEmpty(userId)) {
             return;

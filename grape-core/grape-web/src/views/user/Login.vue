@@ -85,7 +85,6 @@
 <script>
 import TwoStepCaptcha from '@/components/tools/TwoStepCaptcha'
 import { mapActions } from 'vuex'
-import { timeFix } from '@/utils/util'
 import { getSmsCaptcha } from '@/api/login'
 import { password } from '@/utils/password'
 
@@ -217,13 +216,6 @@ export default {
     loginSuccess (res) {
       if (res) {
         this.$router.push({ path: '/' })
-        // 延迟 1 秒显示欢迎信息
-        setTimeout(() => {
-          this.$notification.success({
-            message: '欢迎',
-            description: `${timeFix()}，欢迎回来`
-          })
-        }, 1000)
         this.isLoginError = false
       } else {
         this.isLoginError = true

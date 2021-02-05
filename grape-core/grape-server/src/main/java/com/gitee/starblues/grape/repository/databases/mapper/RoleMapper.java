@@ -4,6 +4,7 @@ import com.gitee.starblues.grape.repository.databases.entity.Role;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -21,5 +22,6 @@ public interface RoleMapper extends BaseMapper<Role> {
      * @return 角色列表
      */
     List<Role> getRoleByUserId(String userId);
+
 
 }

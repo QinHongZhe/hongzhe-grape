@@ -2,8 +2,11 @@ import request from '@/utils/request'
 
 const api = {
   commonApi: '/user',
+  enableRolesApi: '/user/enable-roles',
   uploadAvatarApi: '/current-user/avatar',
   updateUserInfo: '/current-user/basic-info',
+  resetPasswordApi: '/user/resetPassword',
+  updatePasswordApi: '/current-user/password',
   avatarUrl: '/file/avatar'
 }
 
@@ -12,6 +15,20 @@ export function getPageList (params) {
     url: api.commonApi,
     method: 'get',
     params: params
+  })
+}
+
+export function getEnableRoles () {
+  return request('json', true)({
+    url: api.enableRolesApi,
+    method: 'get'
+  })
+}
+
+export function getRoleByUser (userId) {
+  return request('form', true)({
+    url: `${api.commonApi}/${userId}/role`,
+    method: 'get'
   })
 }
 
@@ -40,7 +57,7 @@ export function updateStatus (id, status) {
 
 export function resetPassword (params) {
   return request('json', true)({
-    url: `${api.commonApi}/resetPassword`,
+    url: api.resetPasswordApi,
     method: 'put',
     data: params
   })

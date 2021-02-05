@@ -3,6 +3,7 @@ package com.gitee.starblues.grape.rest.model.param.user;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
@@ -31,6 +32,7 @@ public class UserAddParam {
      */
     @ApiModelProperty(name = "name", value = "用户名称", required = true)
     @NotEmpty(message = "用户名称不能为空")
+    @Length(max = 12, message = "用户名称不能超过12位")
     private String name;
 
     /**
@@ -38,6 +40,7 @@ public class UserAddParam {
      */
     @ApiModelProperty(name = "username", value = "用户名", required = true)
     @NotEmpty(message = "用户名不能为空")
+    @Length(max = 16, message = "用户名不能超过16位")
     private String username;
 
     /**
@@ -45,7 +48,7 @@ public class UserAddParam {
      */
     @ApiModelProperty(name = "password", value = "密码", required = true)
     @NotEmpty(message = "密码不能为空")
-    @Min(value = 6, message = "密码长度不能小于6位")
+    @Length(min = 6, message = "密码长度不能小于6位")
     private String password;
 
 
@@ -59,8 +62,8 @@ public class UserAddParam {
     /**
      * 手机号
      */
-    @ApiModelProperty(name = "photo", value = "手机号")
-    private String photo;
+    @ApiModelProperty(name = "phone", value = "手机号")
+    private String phone;
 
     /**
      * 邮箱
