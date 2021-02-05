@@ -68,12 +68,8 @@
 
 <script>
   import { FormModel } from 'ant-design-vue'
-  const defaultForm = {
-    clientSecret: '',
-    accessTokenValidity: 60,
-    refreshTokenValidity: 60,
-    scope: 'all'
-  }
+  import { add, update } from '@/api/oauth-client'
+  import { fetchResult } from '@/utils/fetchUtil'
   const commonRules = {
     clientId: [
       { required: true, message: '客户端id不能为空', trigger: 'blur' }
@@ -130,7 +126,12 @@
             span: 18
           }
         },
-        form: defaultForm,
+        form: {
+          clientSecret: '',
+          accessTokenValidity: 60,
+          refreshTokenValidity: 60,
+          scope: 'all'
+        },
         rulesAdd: {
           ...commonRules,
           clientSecret: [
@@ -144,16 +145,43 @@
       ok () {
         this.$refs.ruleForm.validate(valid => {
           if (valid) {
-            this.$emit('ok', this.opType, { ...this.form })
-            this.$refs.ruleForm.resetFields()
+            if (this.opType === 'add') {
+              this.fetchAdd()
+            } else if (this.opType === 'update') {
+              this.fetchUpdate()
+            }
           } else {
             return false
           }
         })
       },
       cancel () {
-        this.form = defaultForm
+        this.$refs.ruleForm.resetFields()
         this.$emit('cancel')
+      },
+      fetchAdd () {
+        const fromData = { ...this.form }
+        this.confirmLoading = true
+        add(fromData)
+          .then(res => {
+            if (fetchResult(res)) {
+              this.$refs.ruleForm.resetFields()
+              this.$emit('ok', true)
+            }
+            this.confirmLoading = false
+          })
+      },
+      fetchUpdate () {
+        const fromData = { ...this.form }
+        this.confirmLoading = true
+        update(fromData)
+          .then(res => {
+            if (fetchResult(res)) {
+              this.$refs.ruleForm.resetFields()
+              this.$emit('ok', true)
+            }
+            this.confirmLoading = false
+          })
       }
     },
     watch: {
@@ -162,7 +190,7 @@
           if (this.fromData) {
             this.fromData.clientSecret = ''
             const authorizedGrantTypes = this.fromData.authorizedGrantTypes
-            if (authorizedGrantTypes) {
+            if (typeof authorizedGrantTypes === 'string') {
               this.fromData.authorizedGrantTypes = authorizedGrantTypes.split(',')
             }
             this.form = { ...this.fromData }

@@ -150,9 +150,9 @@
           if (valid) {
             const { opType } = this
             if (opType === 'add') {
-              this.addUser()
+              this.fetchAdd()
             } else if (opType === 'update') {
-              this.updateUser()
+              this.fetchUpdate()
             }
           }
         })
@@ -162,7 +162,7 @@
         this.$refs.ruleForm.resetFields()
         this.$emit('cancel')
       },
-      addUser () {
+      fetchAdd () {
         const fromData = { ...this.form }
         const sourcePassword = fromData.password
         if (sourcePassword) {
@@ -179,7 +179,7 @@
             this.confirmLoading = false
           })
       },
-      updateUser () {
+      fetchUpdate () {
         const fromData = this.form
         fromData.roleIds = this.roleIds
         update(fromData)

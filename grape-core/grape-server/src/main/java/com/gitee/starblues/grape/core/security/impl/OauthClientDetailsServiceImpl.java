@@ -35,11 +35,11 @@ public class OauthClientDetailsServiceImpl extends ServiceImpl<OauthClientDetail
         synchronized(this){
             OauthClientDetails oauthClientDetails = getById(param.getClientId());
             if(oauthClientDetails != null){
-                throw new Exception("已经存在授权客户端: " + param.getClientId());
+                throw new BusinessException("已经存在授权客户端: " + param.getClientId());
             }
             Set<String> authorizedGrantTypes = param.getAuthorizedGrantTypes();
             if(authorizedGrantTypes == null || authorizedGrantTypes.isEmpty()){
-                throw new Exception("授权类型不能为空");
+                throw new BusinessException("授权类型不能为空");
             }
             oauthClientDetails = new OauthClientDetails();
             BeanUtils.copyProperties(param, oauthClientDetails);

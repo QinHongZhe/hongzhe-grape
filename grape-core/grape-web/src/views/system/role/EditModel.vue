@@ -44,9 +44,9 @@
 
 <script>
   import { FormModel } from 'ant-design-vue'
-  const defaultForm = {
-    status: 1
-  }
+  import { add, update } from '@/api/role'
+  import { fetchResult } from '@/utils/fetchUtil'
+
   export default {
     name: 'EditModel',
     components: {
@@ -83,7 +83,9 @@
             span: 14
           }
         },
-        form: defaultForm,
+        form: {
+          status: 1
+        },
         rules: {
           name: [
             { required: true, message: '名称不能为空', trigger: 'blur' }
@@ -99,16 +101,43 @@
       ok () {
         this.$refs.ruleForm.validate(valid => {
           if (valid) {
-            this.$emit('ok', this.opType, { ...this.form })
-            this.$refs.ruleForm.resetFields()
+            if (this.opType === 'add') {
+              this.fetchAdd()
+            } else if (this.opType === 'update') {
+              this.fetchUpdate()
+            }
           } else {
             return false
           }
         })
       },
       cancel () {
-        this.form = defaultForm
+        this.$refs.ruleForm.resetFields()
         this.$emit('cancel')
+      },
+      fetchAdd () {
+        const fromData = { ...this.form }
+        this.confirmLoading = true
+        add(fromData)
+          .then(res => {
+            if (fetchResult(res)) {
+              this.$refs.ruleForm.resetFields()
+              this.$emit('ok', true)
+            }
+            this.model.confirmLoading = false
+          })
+      },
+      fetchUpdate () {
+        const fromData = { ...this.form }
+        this.confirmLoading = true
+        update(fromData)
+          .then(res => {
+            if (fetchResult(res)) {
+              this.$refs.ruleForm.resetFields()
+              this.$emit('ok', true)
+            }
+            this.confirmLoading = false
+          })
       }
     },
     watch: {

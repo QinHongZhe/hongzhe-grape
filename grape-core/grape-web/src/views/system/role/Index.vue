@@ -99,7 +99,7 @@
   import { STable } from '@/components'
   import EditModel from '@/views/system/role/EditModel'
   import RoleMenuEditModel from '@/views/system/role/RoleMenuEditModel'
-  import { getPageList, deleteById, updateStatus, add, update } from '@/api/role'
+  import { getPageList, deleteById, updateStatus } from '@/api/role'
   import { fetchResult } from '@/utils/fetchUtil'
   import { transformCellText } from '@/utils/tableUtils'
   const pageSize = 10
@@ -257,30 +257,11 @@
         }
         this.model.visible = true
       },
-      modelHandleOk (opType, fromData) {
-        if (opType === 'add') {
-          // 新增
-          this.model.confirmLoading = true
-          add(fromData)
-            .then(res => {
-              if (fetchResult(res)) {
-                this.fetchList()
-                this.model.visible = false
-              }
-              this.model.confirmLoading = false
-            })
-        } else if (opType === 'update') {
-          // 修改
-          this.model.confirmLoading = true
-          update(fromData)
-            .then(res => {
-              if (fetchResult(res)) {
-                this.fetchList()
-                this.model.visible = false
-              }
-              this.model.confirmLoading = false
-            })
+      modelHandleOk (result) {
+        if (result) {
+          this.fetchList()
         }
+        this.model.visible = false
       },
       modelHandleCancel () {
         this.model.visible = false

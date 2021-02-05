@@ -87,7 +87,7 @@
 <script>
   import { STable } from '@/components'
   import EditModel from './EditModel'
-  import { getPageList, deleteById, add, update } from '@/api/oauth-client'
+  import { getPageList, deleteById } from '@/api/oauth-client'
   import { fetchResult } from '@/utils/fetchUtil'
   import { transformCellText } from '@/utils/tableUtils'
   const pageSize = 10
@@ -224,30 +224,11 @@
         }
         this.model.visible = true
       },
-      modelHandleOk (opType, fromData) {
-        if (opType === 'add') {
-          // 新增
-          this.model.confirmLoading = true
-          add(fromData)
-            .then(res => {
-              if (fetchResult(res)) {
-                this.fetchList()
-                this.model.visible = false
-              }
-              this.model.confirmLoading = false
-            })
-        } else if (opType === 'update') {
-          // 修改
-          this.model.confirmLoading = true
-          update(fromData)
-            .then(res => {
-              if (fetchResult(res)) {
-                this.fetchList()
-                this.model.visible = false
-              }
-              this.model.confirmLoading = false
-            })
+      modelHandleOk (result) {
+        if (result) {
+          this.fetchList()
         }
+        this.model.visible = false
       },
       modelHandleCancel () {
         this.model.visible = false

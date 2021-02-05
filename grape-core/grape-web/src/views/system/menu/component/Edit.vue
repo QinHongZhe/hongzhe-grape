@@ -155,17 +155,17 @@
           if (valid) {
             const { opType } = this
             if (opType === 'add') {
-              this.addMenu()
+              this.fetchAdd()
             } else if (opType === 'update') {
-              this.updateMenu()
+              this.fetchUpdate()
             }
           } else {
             return false
           }
         })
       },
-      addMenu () {
-        const fromData = this.form
+      fetchAdd () {
+        const fromData = { ...this.form }
         this.confirmLoading = true
         add(fromData)
           .then(res => {
@@ -177,8 +177,8 @@
             this.confirmLoading = false
           })
       },
-      updateMenu () {
-        const fromData = this.form
+      fetchUpdate () {
+        const fromData = { ...this.form }
         this.confirmLoading = true
         update(fromData)
           .then(res => {
