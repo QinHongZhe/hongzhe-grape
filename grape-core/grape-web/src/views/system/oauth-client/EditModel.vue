@@ -90,6 +90,12 @@
       { required: true, message: '权限范围不能为空', trigger: 'blur' }
     ]
   }
+  const DEFAULT_FROM = {
+    clientSecret: '',
+    accessTokenValidity: 60,
+    refreshTokenValidity: 60,
+    scope: 'all'
+  }
   export default {
     name: 'EditModel',
     components: {
@@ -126,12 +132,7 @@
             span: 18
           }
         },
-        form: {
-          clientSecret: '',
-          accessTokenValidity: 60,
-          refreshTokenValidity: 60,
-          scope: 'all'
-        },
+        form: { ...DEFAULT_FROM },
         rulesAdd: {
           ...commonRules,
           clientSecret: [
@@ -156,7 +157,7 @@
         })
       },
       cancel () {
-        this.$refs.ruleForm.resetFields()
+        this.form = { ...DEFAULT_FROM }
         this.$emit('cancel')
       },
       fetchAdd () {
@@ -165,7 +166,7 @@
         add(fromData)
           .then(res => {
             if (fetchResult(res)) {
-              this.$refs.ruleForm.resetFields()
+              this.form = { ...DEFAULT_FROM }
               this.$emit('ok', true)
             }
             this.confirmLoading = false
@@ -177,7 +178,7 @@
         update(fromData)
           .then(res => {
             if (fetchResult(res)) {
-              this.$refs.ruleForm.resetFields()
+              this.form = { ...DEFAULT_FROM }
               this.$emit('ok', true)
             }
             this.confirmLoading = false

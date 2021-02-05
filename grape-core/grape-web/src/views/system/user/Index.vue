@@ -104,7 +104,6 @@
       :visible="model.visible"
       :loading="model.confirmLoading"
       :from-data="model.form"
-      :source-role-ids="model.sourceRoleIds"
       :opType="model.opType"
       @cancel="modelHandleCancel"
       @ok="modelHandleOk"
@@ -205,7 +204,6 @@
           visible: false,
           confirmLoading: false,
           form: {},
-          sourceRoleIds: [],
           opType: null
         },
         resetPasswordMode: {
@@ -301,15 +299,17 @@
                   }
                 })
               }
-              this.model.form = record
-              this.model.sourceRoleIds = roleIds
+              const form = { ...record }
+              form.roleIds = roleIds
+              this.model.form = form
               this.model.opType = 'update'
+              this.model.visible = true
             })
         } else {
           // 新增
           this.model.opType = 'add'
+          this.model.visible = true
         }
-        this.model.visible = true
       },
       modelHandleOk (result) {
         if (result) {

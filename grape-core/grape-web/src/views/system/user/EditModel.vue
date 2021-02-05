@@ -18,14 +18,13 @@
         :label-col="formLayout.labelCol"
         :wrapper-col="formLayout.wrapperCol"
       >
-        <a-form-model-item label="角色">
+        <a-form-model-item label="角色" prop="roleIds">
           <a-select
-            v-model="roleIds"
+            v-model="form.roleIds"
             placeholder="请选择角色"
             mode="multiple"
             notFoundContent="没有可以的角色"
-            :showSearch="true"
-            @change="handleChange">
+            :showSearch="true">
             <a-select-option v-for="role in roles" :key="role.roleId" :value="role.roleId">
               {{ role.name }}
             </a-select-option>
@@ -66,7 +65,7 @@
   import { fetchResult } from '@/utils/fetchUtil'
   import { password } from '@/utils/password'
   import { add, update, getEnableRoles } from '@/api/user'
-  const defaultForm = {
+  const DEFAULT_FROM = {
     roleIds: [],
     status: 1
   }
@@ -85,11 +84,6 @@
         type: Object,
         required: false,
         default: () => {}
-      },
-      sourceRoleIds: {
-        type: Array,
-        required: false,
-        default: () => []
       },
       opType: {
         type: String,
@@ -119,8 +113,7 @@
         },
         confirmLoading: false,
         roles: {},
-        form: defaultForm,
-        roleIds: [],
+        form: { ...DEFAULT_FROM },
         rules: {
           roleIds: [
             { required: true, message: '角色不能为空', trigger: 'blur' }
@@ -141,10 +134,6 @@
       }
     },
     methods: {
-      handleChange (value) {
-        this.roleIds = value
-        this.form.roleIds = value
-      },
       ok () {
         this.$refs.ruleForm.validate(valid => {
           if (valid) {
@@ -155,11 +144,11 @@
               this.fetchUpdate()
             }
           }
+          return false
         })
       },
       cancel () {
-        this.roleIds = []
-        this.$refs.ruleForm.resetFields()
+        this.form = { ...DEFAULT_FROM }
         this.$emit('cancel')
       },
       fetchAdd () {
@@ -172,21 +161,18 @@
         add(fromData)
           .then(res => {
             if (fetchResult(res)) {
-              this.roleIds = []
-              this.$refs.ruleForm.resetFields()
+              this.form = { ...DEFAULT_FROM }
               this.$emit('ok', true)
             }
             this.confirmLoading = false
           })
       },
       fetchUpdate () {
-        const fromData = this.form
-        fromData.roleIds = this.roleIds
+        const fromData = { ...this.form }
         update(fromData)
           .then(res => {
             if (fetchResult(res)) {
-              this.roleIds = []
-              this.$refs.ruleForm.resetFields()
+              this.form = { ...DEFAULT_FROM }
               this.$emit('ok', true)
             }
             this.confirmLoading = false
@@ -197,7 +183,6 @@
       fromData () {
         if (this.opType === 'update') {
           this.form = { ...this.fromData }
-          this.roleIds = this.sourceRoleIds
         }
       }
     }

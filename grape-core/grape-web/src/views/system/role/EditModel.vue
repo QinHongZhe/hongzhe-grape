@@ -46,7 +46,9 @@
   import { FormModel } from 'ant-design-vue'
   import { add, update } from '@/api/role'
   import { fetchResult } from '@/utils/fetchUtil'
-
+  const DEFAULT_FROM = {
+    status: 1
+  }
   export default {
     name: 'EditModel',
     components: {
@@ -83,9 +85,7 @@
             span: 14
           }
         },
-        form: {
-          status: 1
-        },
+        form: { ...DEFAULT_FROM },
         rules: {
           name: [
             { required: true, message: '名称不能为空', trigger: 'blur' }
@@ -112,7 +112,7 @@
         })
       },
       cancel () {
-        this.$refs.ruleForm.resetFields()
+        this.form = { ...DEFAULT_FROM }
         this.$emit('cancel')
       },
       fetchAdd () {
@@ -121,7 +121,7 @@
         add(fromData)
           .then(res => {
             if (fetchResult(res)) {
-              this.$refs.ruleForm.resetFields()
+              this.form = { ...DEFAULT_FROM }
               this.$emit('ok', true)
             }
             this.model.confirmLoading = false
@@ -133,7 +133,7 @@
         update(fromData)
           .then(res => {
             if (fetchResult(res)) {
-              this.$refs.ruleForm.resetFields()
+              this.form = { ...DEFAULT_FROM }
               this.$emit('ok', true)
             }
             this.confirmLoading = false
