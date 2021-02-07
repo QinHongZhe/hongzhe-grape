@@ -16,7 +16,7 @@
 - 插件中支持`Thymeleaf`
 
 ##### 文档地址
-[文档地址](http://www.starblues.cn:8000/grape/)
+[文档地址](http://www.starblues.cn:8000/)
 
 ##### 演示地址
 [演示地址](http://www.starblues.cn:9000/web)
