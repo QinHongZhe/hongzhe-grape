@@ -48,7 +48,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
      * @param havePluginMenu 是否包含插件菜单
      * @return List
      */
-    List<MenuTree> getMenuTree(@Param("roleCodes") Set<String> roleCodes,
-                               @Param("havePluginMenu") Boolean havePluginMenu);
+    List<MenuTree> getMenuTreeByRole(@Param("roleCodes") Set<String> roleCodes,
+                                     @Param("havePluginMenu") Boolean havePluginMenu);
 
 }

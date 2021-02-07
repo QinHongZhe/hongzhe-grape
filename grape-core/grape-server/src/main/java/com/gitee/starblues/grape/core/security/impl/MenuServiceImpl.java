@@ -173,7 +173,7 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
         if(roleCodes.isEmpty()){
             return Collections.emptyList();
         }
-        List<MenuTree> menuTree = super.baseMapper.getMenuTree(roleCodes, havePluginMenu);
+        List<MenuTree> menuTree = super.baseMapper.getMenuTreeByRole(roleCodes, havePluginMenu);
         ListToTree<MenuTree> listToTree = getListToTree();
         return listToTree.listToTree(menuTree);
     }

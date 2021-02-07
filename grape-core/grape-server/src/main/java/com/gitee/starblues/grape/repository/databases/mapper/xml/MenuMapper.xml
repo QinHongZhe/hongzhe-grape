@@ -72,7 +72,7 @@
         order by order_num asc
     </select>
 
-    <select id="getMenuTree" resultType="com.gitee.starblues.grape.core.security.model.MenuTree">
+    <select id="getMenuTreeByRole" resultType="com.gitee.starblues.grape.core.security.model.MenuTree">
         select m.*
         from menu m
         left join role_menu rm on m.menu_id = rm.menu_id

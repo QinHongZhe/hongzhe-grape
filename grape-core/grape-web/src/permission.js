@@ -50,7 +50,7 @@ router.beforeEach((to, from, next) => {
             console.log(error)
             notification.error({
               message: '提示',
-              description: '该用户角色或者权限, 无法登录'
+              description: error.message
             })
             // 失败时，获取用户信息失败时，调用登出，来清空历史保留信息
             store.dispatch('Logout').then(() => {

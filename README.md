@@ -16,10 +16,10 @@
 - 插件中支持`Thymeleaf`
 
 ##### 文档地址
-[文档地址](http://39.99.159.68/grape/)
+[文档地址](http://www.starblues.cn:8000/grape/)
 
 ##### 演示地址
-[演示地址](http://39.99.159.68:9000/web)
+[演示地址](http://www.starblues.cn:9000/web)
 - 用户名密码: admin/123456
 
 #### 快速体验
