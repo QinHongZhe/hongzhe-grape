@@ -7,6 +7,7 @@ import org.springframework.context.ApplicationListener;
 import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
 import org.springframework.stereotype.Component;
 
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -30,6 +31,10 @@ public class AuthFailureListener implements ApplicationListener<AbstractAuthenti
     public void onApplicationEvent(AbstractAuthenticationFailureEvent auth) {
         String ip = HttpUtils.getRemoteAddress();
         Object username = auth.getAuthentication().getPrincipal();
+        String s = String.valueOf(username);
+        if(Objects.equals(s, "access-token")){
+            return;
+        }
         executorService.execute(()->{
             loginLogService.addFailure(String.valueOf(username), ip, auth.getTimestamp(),
                     auth.getException().getLocalizedMessage());
