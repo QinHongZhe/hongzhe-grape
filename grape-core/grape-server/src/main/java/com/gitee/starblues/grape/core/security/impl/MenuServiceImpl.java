@@ -289,6 +289,9 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     public void addMenu(MenuAddParam param) {
         Menu add = new Menu();
         BeanUtils.copyProperties(param, add);
+        if(StrUtil.isEmpty(add.getParentId())){
+            add.setParentId("0");
+        }
         add.setDeleted(0);
         add.setEnable(1);
         add.setPluginMenu(0);

@@ -44,7 +44,7 @@ public interface MenuMapper extends BaseMapper<Menu> {
 
     /**
      * 根据角色编号得到菜单树bean的集合
-     * @param roleCodes 角色id
+     * @param roleCodes 角色编号
      * @param havePluginMenu 是否包含插件菜单
      * @return List
      */

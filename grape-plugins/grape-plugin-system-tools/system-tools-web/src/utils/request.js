@@ -49,35 +49,24 @@ const request = function (requestDataType, useBaseUrl, isGetOriginalData = false
 
 // 异常拦截处理器
 const errorHandler = (error) => {
+  let message = ''
   if (error.response) {
-    const data = error.response.data
+    const response = error.response
+    const data = response.data
     // 从 localstorage 获取 token
-    if (error.response.status === 403) {
-      notification.error({
-        message: 'Forbidden',
-        description: data.message
-      })
-    }
-    if (error.response.status === 401) {
-      notification.error({
-        message: '授权失败',
-        description: data.message
-      })
-      if (data.code === 4) {
-        // token 过期
-        notification.error({
-          message: '授权失败',
-          description: 'token过期'
-        })
-      }
-    }
-    return data
+    message = data.message ? data.message : '授权失败'
+    notification.error({
+      message: '授权失败',
+      description: message
+    })
+  } else {
+    message = '网络异常'
+    notification.error({
+      message: '错误',
+      description: message
+    })
   }
-  notification.error({
-    message: '错误',
-    description: '网络异常'
-  })
-  return Promise.reject(error)
+  return Promise.reject(new Error(message))
 }
 
 // request interceptor
@@ -96,23 +85,12 @@ function setRequestInterceptors (request) {
 // response interceptor
 function setResponseInterceptors (request, isGetOriginalData) {
   request.interceptors.response.use((response) => {
-    let message = null
     if (response.status === 200) {
       if (isGetOriginalData) {
         return response
       } else {
         return response.data
       }
-    } else if (response.status === 500) {
-      message = '服务器错误[500]'
-    } else {
-      message = '请求失败[' + response.status + ']'
-    }
-    if (message) {
-      notification.error({
-        message: message,
-        description: response.data.message
-      })
     }
   }, errorHandler)
 }

@@ -1,5 +1,5 @@
 import request from '@/utils/request'
-
+import config from '@/utils/config'
 const api = {
   commonApi: config.getPluginApiUrl('/code-generator'),
   gen: config.getPluginApiUrl('/code-generator/gen')
@@ -39,7 +39,7 @@ export function deleteById (id) {
 }
 
 export function gen (id) {
-  return request('json', false)({
+  return request('json', false, true)({
     url: `${api.gen}/${id}`,
     method: 'post',
     responseType: 'blob'

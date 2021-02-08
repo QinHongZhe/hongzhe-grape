@@ -23,7 +23,7 @@
                 </a-select-option>
               </a-select>
             </a-form-model-item>
-            <a-form-model-item label="账户状态" prop="status">
+            <a-form-model-item label="账户状态" prop="locked">
               <a-select v-model="searchFrom.locked" placeholder="选择账户状态" style="width: 120px">
                 <a-select-option value="">
                   全部

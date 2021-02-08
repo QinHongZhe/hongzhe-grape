@@ -153,10 +153,17 @@ export default {
 
       gen(id)
         .then(response => {
+          console.log(response)
           // 提取文件名
           this.isGen = false
-          const fileName = response.headers['content-disposition'].match(
-                  /filename=(.*)/)[1]
+          const contentDisposition = response.headers['content-disposition']
+          let fileName = null
+          console.log(contentDisposition)
+          if (contentDisposition) {
+            fileName = contentDisposition.match(/filename=(.*)/)[1]
+          } else {
+            fileName = 'code.zip'
+          }
           // 将二进制流转为blob
           const blob = new Blob([response.data], { type: 'application/octet-stream' })
           if (typeof window.navigator.msSaveBlob !== 'undefined') {

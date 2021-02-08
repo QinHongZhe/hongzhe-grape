@@ -31,7 +31,7 @@ public class Menu implements Serializable {
     private String menuId;
 
     /**
-     * 父菜单id
+     * 父菜单id,如果是顶级菜单, 则为0
      */
     private String parentId;
 

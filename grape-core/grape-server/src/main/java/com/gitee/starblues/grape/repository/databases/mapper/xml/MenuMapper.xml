@@ -76,9 +76,10 @@
         select m.*
         from menu m
         left join role_menu rm on m.menu_id = rm.menu_id
-        where m.deleted = 0 and m.enable = 1 and rm.role_id in
-        <foreach collection="roleIds" item="roleId" index="index" open="(" close=")" separator=",">
-            #{roleId}
+        left join role r on r.role_id = rm.role_id
+        where m.deleted = 0 and m.enable = 1 and r.code in
+        <foreach collection="roleCodes" item="roleCode" index="index" open="(" close=")" separator=",">
+            #{roleCode}
         </foreach>
         <if test="havePluginMenu != null and havePluginMenu==false">
             and m.plugin_menu = 0
